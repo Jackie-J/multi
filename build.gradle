@@ -1,0 +1,57 @@
+// 指定要应用的插件和版本
+plugins {
+	id 'org.springframework.boot' version '2.3.1.RELEASE' apply false
+	id 'java'
+}
+
+// 应用所有项目
+allprojects {
+	group = 'com.jackie'
+	version = '0.0.1-SNAPSHOT'
+
+	// 指定下载的仓库地址
+	repositories {
+		maven { url 'https://maven.aliyun.com/repository/public/'}
+		jcenter()
+		mavenCentral()
+	}
+}
+
+// 应用所有子项目
+subprojects {
+	// 应用插件
+	// spring统一依赖管理
+	apply plugin: 'io.spring.dependency-management'
+	apply plugin: 'java'
+
+	dependencyManagement {
+		imports {
+			mavenBom org.springframework.boot.gradle.plugin.SpringBootPlugin.BOM_COORDINATES
+		}
+	}
+
+	// 避免出现编译报错：程序包xxx不存在
+	jar.enabled = true
+
+	// 设置编译和运行的jre兼容版本
+	sourceCompatibility = '1.8'
+	targetCompatibility = '1.8'
+	// java编译的时候缺省状态下会因为中文字符而失败
+	[compileJava,compileTestJava,javadoc]*.options*.encoding = 'UTF-8'
+	
+	dependencies {
+		testImplementation('org.springframework.boot:spring-boot-starter-test') {
+			exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+		}
+	}
+
+	test {
+		useJUnitPlatform()
+	}
+
+}
+
+
+
+
+
