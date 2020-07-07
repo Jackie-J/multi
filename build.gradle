@@ -19,9 +19,10 @@ allprojects {
 
 // 应用所有子项目
 subprojects {
-	// 应用插件
-	// spring统一依赖管理
+
+	// spring统一依赖管理，配合dependencyManagement使用
 	apply plugin: 'io.spring.dependency-management'
+	// 应用java插件
 	apply plugin: 'java'
 
 	dependencyManagement {
